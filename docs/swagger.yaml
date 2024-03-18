@@ -1,0 +1,381 @@
+basePath: /api/v1
+definitions:
+  models.Actor:
+    properties:
+      birthday:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      sex:
+        type: string
+    type: object
+  models.CreateFilm:
+    properties:
+      actors:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      rating:
+        type: integer
+      release:
+        type: string
+    type: object
+  models.Film:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      rating:
+        type: integer
+      release:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+  description: Your API's Description
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://example.com/terms/
+  title: Your API's Title
+  version: "1.0"
+paths:
+  /actor:
+    post:
+      consumes:
+      - application/json
+      description: Добавление нового актера в базу данных
+      parameters:
+      - description: Информация о новом актере
+        in: body
+        name: actor
+        required: true
+        schema:
+          $ref: '#/definitions/models.Actor'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Actor created
+          schema:
+            type: string
+        "400":
+          description: Failed to parse request body
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Добавить нового актера
+      tags:
+      - actors
+  /actor/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Удаление актера из базы данных по его идентификатору
+      parameters:
+      - description: ID актера
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Actor deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid actor ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Удалить актера по ID
+      tags:
+      - actors
+    get:
+      consumes:
+      - application/json
+      description: Получение информации об актере по его идентификатору
+      parameters:
+      - description: ID актера
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Actor'
+        "400":
+          description: Missing actor ID or invalid actor ID
+          schema:
+            type: string
+        "404":
+          description: Actor not found
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Получить информацию об актере по ID
+      tags:
+      - actors
+    patch:
+      consumes:
+      - application/json
+      description: Обновление информации об актере в базе данных по его идентификатору
+      parameters:
+      - description: ID актера
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Информация об обновленном актере
+        in: body
+        name: actor
+        required: true
+        schema:
+          $ref: '#/definitions/models.Actor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Actor updated
+          schema:
+            type: string
+        "400":
+          description: Invalid actor ID or failed to decode request body
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Обновить информацию об актере
+      tags:
+      - actors
+  /actors:
+    get:
+      consumes:
+      - application/json
+      description: Получение списка всех актеров из базы данных
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Actor'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Получить список всех актеров
+      tags:
+      - actors
+  /film:
+    post:
+      consumes:
+      - application/json
+      description: Добавление нового фильма
+      parameters:
+      - description: Новый фильм
+        in: body
+        name: film
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateFilm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Film added successfully
+          schema:
+            type: string
+        "400":
+          description: Failed to parse request body
+          schema:
+            type: string
+        "500":
+          description: Failed to add film
+          schema:
+            type: string
+      summary: Добавить новый фильм
+      tags:
+      - films
+  /film/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Удаление фильма по его идентификатору
+      parameters:
+      - description: ID фильма
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Film deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Missing film ID or invalid film ID
+          schema:
+            type: string
+        "500":
+          description: Failed to delete film
+          schema:
+            type: string
+      summary: Удалить фильм
+      tags:
+      - films
+    get:
+      consumes:
+      - application/json
+      description: Получение информации о фильме по его идентификатору
+      parameters:
+      - description: ID фильма
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Film'
+        "400":
+          description: Missing film ID or invalid film ID
+          schema:
+            type: string
+        "404":
+          description: Film not found
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Получить информацию о фильме по ID
+      tags:
+      - films
+    patch:
+      consumes:
+      - application/json
+      description: Обновление информации о фильме по его идентификатору
+      parameters:
+      - description: ID фильма
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Измененные данные фильма
+        in: body
+        name: film
+        required: true
+        schema:
+          $ref: '#/definitions/models.Film'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Film updated successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid film ID or failed to decode request body
+          schema:
+            type: string
+        "500":
+          description: Failed to update film
+          schema:
+            type: string
+      summary: Обновить информацию о фильме
+      tags:
+      - films
+  /film_actors/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Получение списка всех фильмов, в которых участвовал актер, по его
+        идентификатору
+      parameters:
+      - description: ID актера
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Film'
+            type: array
+        "400":
+          description: Invalid actor ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Получить список всех фильмов, в которых участвовал актер
+      tags:
+      - film_actors
+  /films:
+    get:
+      consumes:
+      - application/json
+      description: Получение списка всех фильмов
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Film'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Получить список всех фильмов
+      tags:
+      - films
+swagger: "2.0"
